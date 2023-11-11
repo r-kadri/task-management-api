@@ -4,6 +4,7 @@ public class TaskNotFoundException extends RuntimeException {
     private int id;
 
     public TaskNotFoundException(int id) {
+        super("Task with id " + id + " not found");
         this.id = id;
     }
 

@@ -12,6 +12,13 @@ import fr.ryan.task_management_api.Class.ErrorResponse;
 @ControllerAdvice
 @RestController
 public class TaskExceptionHandler {
+    @ExceptionHandler(NoTasksFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleNoTasksFoundException(NoTasksFoundException ex) {
+        ErrorResponse response = new ErrorResponse("No tasks found", HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<ErrorResponse>(response, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(TaskNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleTaskNotFoundException(TaskNotFoundException ex) {
