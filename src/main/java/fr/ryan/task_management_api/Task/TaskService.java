@@ -3,8 +3,10 @@ package fr.ryan.task_management_api.Task;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import fr.ryan.task_management_api.Task.Exception.InvalidTaskException;
 import fr.ryan.task_management_api.Task.Exception.NoTasksFoundException;
 import fr.ryan.task_management_api.Task.Exception.TaskNotFoundException;
 
@@ -38,5 +40,25 @@ public final class TaskService {
      */
     public Task getTaskById(int id) {
         return this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+    }
+
+    /**
+     * Add a task
+     * @param task
+     * @return Task
+     * @throws InvalidTaskException
+     */
+    public Task addTask(Task task) {
+        if(task.getStatus() == null) {
+            task.setStatus(TaskStatusEnum.IN_PROGRESS);
+        }
+        try {
+            this.taskRepository.save(task);
+        } catch (DataIntegrityViolationException ex) {
+            throw ex.getMessage().contains("not-null")
+                ? new InvalidTaskException("Label is required")
+                : new InvalidTaskException();
+        }
+        return task;
     }
 }
