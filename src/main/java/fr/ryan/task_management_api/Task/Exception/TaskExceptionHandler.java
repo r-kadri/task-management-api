@@ -25,4 +25,11 @@ public class TaskExceptionHandler {
         ErrorResponse response = new ErrorResponse("Task with id " + ex.getId() + " not found", HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<ErrorResponse>(response, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidTaskException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleInvalidTaskException(InvalidTaskException ex) {
+        ErrorResponse response = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
+    }
 }
