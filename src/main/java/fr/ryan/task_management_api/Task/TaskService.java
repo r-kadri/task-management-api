@@ -74,4 +74,16 @@ public final class TaskService {
         task.setStatus(status);
         return this.taskRepository.save(task);
     }
+
+    /**
+     * Delete a task
+     * @param id
+     * @return boolean
+     * @throws TaskNotFoundException
+     */
+    public boolean deleteTask(int id) {
+        Task task = this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        this.taskRepository.delete(task);
+        return true;
+    }
 }
