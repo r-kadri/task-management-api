@@ -61,4 +61,17 @@ public final class TaskService {
         }
         return task;
     }
+
+    /**
+     * Update a task status
+     * @param id
+     * @param status
+     * @return Task
+     * @throws TaskNotFoundException
+     */
+    public Task updateTaskStatus(int id, TaskStatusEnum status) {
+        Task task = this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        task.setStatus(status);
+        return this.taskRepository.save(task);
+    }
 }
